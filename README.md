@@ -1,6 +1,8 @@
 Orthogonal Polynomials in Python
 ================================
 
+The Python 3 version of [py-orthpol](https://github.com/PredictiveScienceLab/py-orthpol).
+
 Description
 -----------
 The ``py-orthpol`` package defines the module ``orthpol`` which can be used
@@ -35,13 +37,13 @@ Installation
 Simply clone the repository:
 
 ```
-git clone https://github.com/ebilionis/py-orthpol.git
+git clone https://github.com/orcuslc/py-orthpol.git
 ```
 
 Go inside the directory and run:
 
 ```
-python setup.py install
+python3 setup.py install
 ```
 
 Demos
