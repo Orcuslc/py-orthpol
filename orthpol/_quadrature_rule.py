@@ -6,6 +6,8 @@ Author:
 
 Date:
     7/25/2013
+
+Revised by @Chuan Lu, 2018-02-08
 """
 
 
@@ -14,7 +16,7 @@ __all__ = ['QuadratureRule']
 
 import numpy as np
 import math
-import _orthpol as orthpol
+from ._orthpol import *
 
 
 def symtr(t):
@@ -49,9 +51,9 @@ def tr(t):
 def fejer(n, dtype='float64'):
     """Generate the n-point Fejer quadrature rule."""
     if dtype == 'float64':
-        func = orthpol.dfejer
+        func = dfejer
     else:
-        func = orthpol.fejer
+        func = fejer
     return func(n)
 
 
@@ -77,7 +79,7 @@ class QuadratureRule(object):
     def num_quad(self):
         return self._x.shape[0]
 
-    def __init__(self, left=-1, right=1, wf=lambda(x): 1., ncap=500,
+    def __init__(self, left=-1, right=1, wf=lambda x: 1., ncap=500,
                  name='Quadrature Rule'):
         """Construct a quadrature rule.
 
@@ -90,7 +92,7 @@ class QuadratureRule(object):
         """
         x, w = fejer(ncap)
         if wf is None:
-            wf = lambda(x): np.ones(x.shape)
+            wf = lambda x: np.ones(x.shape)
         if math.isinf(left) and math.isinf(right):
             phi, dphi = symtr(x)
             self._x = phi

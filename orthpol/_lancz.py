@@ -5,6 +5,8 @@ Author:
 
 Date:
     7/25/2013
+
+Revised by @Chuan Lu, 2018-02-08
 """
 
 
@@ -12,7 +14,7 @@ __all__ = ['lancz']
 
 
 import numpy as np
-import _orthpol as orthpol
+from ._orthpol import *
 
 
 def lancz(x, w, n):
@@ -22,9 +24,9 @@ def lancz(x, w, n):
     Wrapper from ORTHPOL.
     """
     if x.dtype == 'float32':
-        func = orthpol.slancz
+        func = slancz
     else:
-        func = orthpol.dlancz
+        func = dlancz
     alpha, beta, ierr = func(n, x, w)
     assert ierr == 0
     return alpha, beta
@@ -33,7 +35,7 @@ def lancz(x, w, n):
 if __name__ == '__main__':
     x = np.linspace(0., 1, 100)
     w = np.ones(100)
-    print x, w
+    print(x, w)
     alpha, beta = lancz(x, w, 10)
-    print alpha
-    print beta
+    print(alpha)
+    print(beta)

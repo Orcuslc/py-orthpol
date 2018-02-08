@@ -6,6 +6,8 @@ Author:
 
 Date:
     7/25/2013
+
+Revised by @Chuan Lu, 2018-02-08
 """
 
 
@@ -14,10 +16,9 @@ __all__ = ['OrthogonalPolynomial', 'ProductBasis']
 
 import numpy as np
 import math
-import itertools
 from ._quadrature_rule import *
 from ._lancz import *
-import _orthpol as orthpol
+from ._orthpol import *
 
 
 class OrthogonalPolynomial(object):
@@ -74,7 +75,7 @@ class OrthogonalPolynomial(object):
     def num_output(self):
         return self._num_output
 
-    def __init__(self, degree, rv=None, left=-1, right=1, wf=lambda(x): 1.,
+    def __init__(self, degree, rv=None, left=-1, right=1, wf=lambda x: 1.,
                  ncap=50, quad=None,
                  name='Orthogonal Polynomial'):
         """Construct the polynomial.
@@ -107,14 +108,17 @@ class OrthogonalPolynomial(object):
 
     def __call__(self, x):
         """Evaluate the function at x."""
-        return orthpol.poly_eval_all(x, self.alpha, self.beta, self.gamma)
+        # return orthpol.poly_eval_all(x, self.alpha, self.beta, self.gamma)
+        return poly_eval_all(x, self.alpha, self.beta, self.gamma)
 
     def d(self, x):
-        return orthpol.poly_deval_all(x, self.alpha, self.beta, self.gamma)
+        # return orthpol.poly_deval_all(x, self.alpha, self.beta, self.gamma)
+        return poly_deval_all(x, self.alpha, self.beta, self.gamma)
 
     def _eval(self, x):
         """Evaluate the polynomial basis at x."""
-        return orthpol.poly_eval(x, self.alpha, self.beta, self.gamma)
+        # return orthpol.poly_eval(x, self.alpha, self.beta, self.gamma)
+        return poly_eval(x, self.alpha, self.beta, self.gamma)
 
     def _d_eval(self, x):
         """Evaluate the derivative of the polynomial.
@@ -122,7 +126,8 @@ class OrthogonalPolynomial(object):
         Arguments:
             x   ---     The input point(s).
         """
-        return orthpol.poly_deval(x, self.alpha, self.beta, self.gamma)
+        # return orthpol.poly_deval(x, self.alpha, self.beta, self.gamma)
+        return poly_deval(x, self.alpha, self.beta, self.gamma)
 
     def _evaluate_square_norms(self):
         """Evaluate the square norms of the polynomials."""
@@ -134,7 +139,8 @@ class OrthogonalPolynomial(object):
 
     def normalize(self):
         """Normalize the polynomials."""
-        self._beta, self._gamma = orthpol.poly_normalize(self.beta, self.gamma)
+        # self._beta, self._gamma = orthpol.poly_normalize(self.beta, self.gamma)
+        self._beta, self._gamma = poly_normalize(self.beta, self.gamma)
         self._is_normalized = True
 
     def __str__(self):
@@ -285,7 +291,7 @@ class ProductBasis(object):
         # The array cnt stores the number of terms we need to
         # increment for each dimension.
         cnt = np.zeros(num_dim, dtype='i')
-        for j, p in itertools.izip(range(num_dim), self.polynomials):
+        for j, p in zip(range(num_dim), self.polynomials):
             if p.degree >= 1:
                 cnt[j] = 1
 
@@ -301,7 +307,7 @@ class ProductBasis(object):
             # Stores the inde of the term we are copying
             prev = 0
             # Loop over dimensions
-            for j, p in itertools.izip(range(num_dim), self.polynomials):
+            for j, p in zip(range(num_dim), self.polynomials):
                 # Increment orders of cnt[j] terms for dimension j
                 for i in range(cnt[j]):
                     if terms_order[k - 1][prev + i][j] < p.degree:
